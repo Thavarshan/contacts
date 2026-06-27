@@ -37,6 +37,10 @@ Configure these as repository variables or production environment variables:
 Protect the `production` GitHub environment and require review before deployment if this repository
 is used for a real AWS account.
 
+The deploy workflow skips automatically until `AWS_ROLE_TO_ASSUME`, `TF_STATE_BUCKET`, and
+`TF_STATE_LOCK_TABLE` are configured. This keeps the main branch green before AWS infrastructure has
+been bootstrapped.
+
 ## CI/CD Workflows
 
 | Workflow    | Trigger                                          | Responsibility                                                                                               |

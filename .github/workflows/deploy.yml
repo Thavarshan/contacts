@@ -30,7 +30,11 @@ jobs:
     name: Build, Publish, and Deploy
     runs-on: ubuntu-latest
     environment: production
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: >-
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+      && vars.AWS_ROLE_TO_ASSUME != ''
+      && vars.TF_STATE_BUCKET != ''
+      && vars.TF_STATE_LOCK_TABLE != ''
 
     steps:
       - name: Check out repository
