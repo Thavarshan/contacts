@@ -104,7 +104,7 @@ readable, and aligned with [Data Format](data-format.md).
 
 ## CI Parity
 
-CI runs:
+The Java CI job runs:
 
 ```bash
 ./mvnw -B -ntp verify
@@ -112,3 +112,28 @@ CI runs:
 
 Local verification should catch the same build, test, formatting, coverage, PMD, SpotBugs, and
 Javadoc failures before a pull request is opened.
+
+## Web Verification
+
+Run the dashboard checks from the repository root:
+
+```bash
+npm run format:check
+npm --prefix web run format:check
+npm --prefix web run lint
+npm --prefix web run typecheck
+npm --prefix web run test:run
+npm --prefix web run build
+```
+
+Or run the combined web gate:
+
+```bash
+npm --prefix web run verify
+```
+
+The root monorepo shortcut runs both Java and web checks:
+
+```bash
+npm run verify
+```

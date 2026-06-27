@@ -75,7 +75,7 @@ matching, ranking, or tokenization.
 Try searching a smaller fragment:
 
 ```bash
-java -jar target/contacts-1.0.0-SNAPSHOT-cli.jar --file contacts.csv search jane
+java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv search jane
 ```
 
 ## Update Replaced a List Field
@@ -85,13 +85,13 @@ Repeatable list options replace the full list when supplied to `update`.
 For example, this leaves the contact with exactly one email:
 
 ```bash
-java -jar target/contacts-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 --email new@example.com
+java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 --email new@example.com
 ```
 
 To keep multiple values, provide all desired values:
 
 ```bash
-java -jar target/contacts-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 \
+java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 \
   --email work@example.com \
   --email personal@example.com
 ```

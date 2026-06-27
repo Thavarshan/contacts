@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
   workflow_dispatch:
     inputs:
       tag:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '17'
           cache: maven
 
       - name: Verify and package
@@ -42,4 +42,4 @@ jobs:
         run: |
           gh release view "$RELEASE_TAG" >/dev/null 2>&1 || \
             gh release create "$RELEASE_TAG" --title "$RELEASE_TAG" --notes-file CHANGELOG.md
-          gh release upload "$RELEASE_TAG" target/*-cli.jar --clobber
+          gh release upload "$RELEASE_TAG" cli/target/*-cli.jar api/target/*-api.jar --clobber

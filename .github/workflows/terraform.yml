@@ -1,0 +1,72 @@
+name: Terraform
+
+on:
+  pull_request:
+    paths:
+      - 'infra/terraform/**'
+      - '.github/workflows/terraform.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: terraform-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  TF_IN_AUTOMATION: true
+  TF_INPUT: false
+  TF_STATE_KEY: ${{ vars.TF_STATE_KEY || 'contacts/prod/terraform.tfstate' }}
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Check Terraform formatting
+        run: terraform -chdir=infra/terraform fmt -recursive -check
+
+      - name: Initialize Terraform
+        run: |
+          terraform -chdir=infra/terraform init \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
+            -backend-config="key=${{ env.TF_STATE_KEY }}" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ vars.TF_STATE_LOCK_TABLE }}" \
+            -backend-config="encrypt=true"
+
+      - name: Validate Terraform
+        run: terraform -chdir=infra/terraform validate
+
+      - name: Plan Terraform changes
+        run: |
+          terraform -chdir=infra/terraform plan \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -var="api_image=${{ vars.TERRAFORM_PLAN_API_IMAGE || 'public.ecr.aws/docker/library/eclipse-temurin:17-jre' }}" \
+            -var="web_image=${{ vars.TERRAFORM_PLAN_WEB_IMAGE || 'public.ecr.aws/docker/library/node:24-alpine' }}" \
+            -out=tfplan
+
+      - name: Upload Terraform plan
+        uses: actions/upload-artifact@v7
+        with:
+          name: terraform-plan
+          path: infra/terraform/tfplan
+          retention-days: 7

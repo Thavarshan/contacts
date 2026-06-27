@@ -1,6 +1,7 @@
-# Contacts CLI
+# Contacts Monorepo
 
-A small Java 17 command-line contacts manager backed by CSV storage.
+A small Java 17 contacts manager backed by CSV storage, with a reusable core, a Picocli command-line
+adapter, a lightweight Javalin HTTP API adapter, and a Next.js web dashboard.
 
 The application demonstrates a layered design with domain models, repository interfaces, CSV adapters, a service layer, and focused CLI commands.
 
@@ -15,30 +16,54 @@ The application demonstrates a layered design with domain models, repository int
 - Import and export CSV files.
 - Clear all contacts.
 - Store data in a portable CSV file.
-- Build a runnable shaded CLI JAR with Maven.
+- Build runnable shaded CLI and API JARs with Maven.
+- Run a Next.js dashboard that communicates with the Java API through HTTP.
 
 ## Requirements
 
 - Java 17 or newer.
+- Node.js 20.18 or newer and npm 10 or newer for the web dashboard.
 - No local Maven installation required when using the included Maven Wrapper.
 
 ## Quick Start
 
 ```bash
 ./mvnw verify
-java -jar target/contacts-1.0.0-SNAPSHOT-cli.jar --help
+java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --help
 ```
 
 Create and list contacts:
 
 ```bash
-java -jar target/contacts-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
+java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
   --first-name Jane \
   --last-name Doe \
   --email jane@example.com \
   --phone +15550100
 
-java -jar target/contacts-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+```
+
+Start the API:
+
+```bash
+CONTACTS_CSV_PATH=contacts.csv CONTACTS_API_PORT=7070 \
+  java -jar api/target/contacts-api-1.0.0-SNAPSHOT-api.jar
+```
+
+Check the API:
+
+```bash
+curl http://127.0.0.1:7070/health
+curl http://127.0.0.1:7070/api/contacts
+```
+
+Install and start the web dashboard:
+
+```bash
+npm install
+npm ci --prefix web
+CONTACTS_API_URL=http://127.0.0.1:7070 npm --prefix web run dev
 ```
 
 ## CLI Commands
@@ -87,20 +112,29 @@ Useful commands:
 ./mvnw spotless:apply
 ./mvnw pmd:check
 ./mvnw spotbugs:check
+npm run format:check
+npm run web:verify
+npm run verify
 ```
 
-The CI pipeline runs the same Maven verification and uploads test reports and built artifacts.
-JaCoCo enforces a minimum coverage gate during `verify`.
+Repository-wide configuration lives at the root: GitHub workflows, issue templates, pull request
+templates, Husky hooks, Prettier settings, `.editorconfig`, and `.gitignore`. The `web/` directory
+keeps only application-specific Next.js, ESLint, TypeScript, Playwright, and package configuration.
+
+The CI pipeline runs Java verification and web verification as separate jobs. JaCoCo enforces a
+minimum Java coverage gate during `verify`.
 
 ## Project Layout
 
 ```text
-src/main/java/com/contacts       Domain, service, mapper, and repository code
-src/main/java/com/contacts/cli   CLI parsing and commands
-src/main/java/com/filemanager    Generic row-oriented file abstractions
-src/test/java                    Unit and integration tests
-docs                             Architecture notes and ADRs
-examples                         Sample CSV and CLI transcript
+core/src/main/java/com/contacts       Domain, service, mapper, and repository code
+core/src/main/java/com/filemanager    Generic row-oriented file abstractions
+cli/src/main/java/com/contacts        Picocli CLI adapter
+api/src/main/java/com/contacts/api    Javalin HTTP API adapter
+web                                  Next.js dashboard
+*/src/test/java                       Unit and integration tests
+docs                                  Architecture notes and ADRs
+examples                              Sample CSV and CLI transcript
 ```
 
 ## Architecture
@@ -110,6 +144,7 @@ examples                         Sample CSV and CLI transcript
 - Persistence abstraction: `ContactRepository`
 - CSV adapter: `CsvContactRepository`, `CsvContactMapper`
 - CLI parser: Picocli command annotations
+- HTTP API: Javalin routes that reuse the same service layer
 
 See [docs/architecture.md](docs/architecture.md) for more detail.
 
@@ -118,10 +153,12 @@ See [docs/architecture.md](docs/architecture.md) for more detail.
 - [Documentation index](docs/README.md)
 - [User guide](docs/user-guide.md)
 - [CLI reference](docs/cli-reference.md)
+- [API reference](docs/api-reference.md)
 - [CSV data format](docs/data-format.md)
 - [Development guide](docs/development.md)
 - [Testing and quality gates](docs/testing-quality.md)
 - [CI and security](docs/ci-security.md)
+- [Deployment](docs/deployment.md)
 - [Release process](docs/release-process.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Architecture decisions](docs/adr/README.md)

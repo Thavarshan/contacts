@@ -1,6 +1,6 @@
 name: Bug report
 description: Report a reproducible problem
-title: "Bug: "
+title: 'Bug: '
 labels:
   - bug
 body:
@@ -19,7 +19,7 @@ body:
     id: reproduce
     attributes:
       label: Steps to reproduce
-      description: Include the command you ran and any relevant CSV sample with sensitive data removed.
+      description: Include the command or web workflow you used and any relevant CSV sample with sensitive data removed.
       placeholder: |
         1. Run `java -jar ...`
         2. Observe ...
@@ -41,13 +41,20 @@ body:
     id: java-version
     attributes:
       label: Java version
-      placeholder: "17.0.x"
+      placeholder: '17.0.x'
     validations:
-      required: true
+      required: false
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: '24.x'
+    validations:
+      required: false
   - type: input
     id: os
     attributes:
       label: Operating system
-      placeholder: "macOS, Linux, Windows"
+      placeholder: 'macOS, Linux, Windows'
     validations:
       required: true

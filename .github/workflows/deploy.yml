@@ -1,0 +1,108 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+    branches:
+      - main
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  IMAGE_TAG: ${{ github.event.workflow_run.head_sha || github.sha }}-${{ github.run_attempt }}
+  TF_IN_AUTOMATION: true
+  TF_INPUT: false
+  TF_STATE_KEY: ${{ vars.TF_STATE_KEY || 'contacts/prod/terraform.tfstate' }}
+
+jobs:
+  deploy:
+    name: Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Initialize Terraform
+        run: |
+          terraform -chdir=infra/terraform init \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
+            -backend-config="key=${{ env.TF_STATE_KEY }}" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ vars.TF_STATE_LOCK_TABLE }}" \
+            -backend-config="encrypt=true"
+
+      - name: Bootstrap ECR repositories
+        run: |
+          terraform -chdir=infra/terraform apply -auto-approve \
+            -target=aws_ecr_repository.api \
+            -target=aws_ecr_repository.web \
+            -var="aws_region=${{ env.AWS_REGION }}"
+
+      - name: Read ECR outputs
+        id: ecr
+        run: |
+          echo "api_repository=$(terraform -chdir=infra/terraform output -raw api_ecr_repository_url)" >> "$GITHUB_OUTPUT"
+          echo "web_repository=$(terraform -chdir=infra/terraform output -raw web_ecr_repository_url)" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: api/Dockerfile
+          push: true
+          tags: ${{ steps.ecr.outputs.api_repository }}:${{ env.IMAGE_TAG }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
+
+      - name: Build and push web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: web/Dockerfile
+          push: true
+          tags: ${{ steps.ecr.outputs.web_repository }}:${{ env.IMAGE_TAG }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,scope=web,mode=max
+
+      - name: Apply Terraform
+        run: |
+          terraform -chdir=infra/terraform apply -auto-approve \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -var="api_image=${{ steps.ecr.outputs.api_repository }}:${{ env.IMAGE_TAG }}" \
+            -var="web_image=${{ steps.ecr.outputs.web_repository }}:${{ env.IMAGE_TAG }}"
+
+      - name: Print application URL
+        run: terraform -chdir=infra/terraform output -raw application_url

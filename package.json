@@ -1,0 +1,39 @@
+{
+  "name": "contacts-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Contacts CLI, HTTP API, and web dashboard monorepo.",
+  "scripts": {
+    "api:build": "./mvnw -B -ntp -pl api -am package",
+    "api:dev": "CONTACTS_API_PORT=${CONTACTS_API_PORT:-7070} java -jar api/target/contacts-api-1.0.0-SNAPSHOT-api.jar",
+    "cli:build": "./mvnw -B -ntp -pl cli -am package",
+    "docker:build": "npm run docker:build:api && npm run docker:build:web",
+    "docker:build:api": "docker build -f api/Dockerfile -t contacts-api:local .",
+    "docker:build:web": "docker build -f web/Dockerfile -t contacts-web:local .",
+    "java:format": "./mvnw -B -ntp spotless:apply",
+    "java:verify": "./mvnw -B -ntp verify",
+    "format": "cd web && npx prettier --config ../.prettierrc.json --ignore-path ../.prettierignore .. --write && cd .. && npm run java:format",
+    "format:check": "cd web && npx prettier --config ../.prettierrc.json --ignore-path ../.prettierignore .. --check && cd .. && ./mvnw -B -ntp spotless:check",
+    "prepare": "husky",
+    "web:build": "npm --prefix web run build",
+    "web:dev": "npm --prefix web run dev",
+    "web:format": "npm --prefix web run format",
+    "web:format:check": "npm --prefix web run format:check",
+    "web:install": "npm ci --prefix web",
+    "web:lint": "npm --prefix web run lint",
+    "web:test": "npm --prefix web run test:run",
+    "web:typecheck": "npm --prefix web run typecheck",
+    "web:verify": "npm --prefix web run verify",
+    "terraform:fmt": "terraform -chdir=infra/terraform fmt -recursive",
+    "terraform:fmt:check": "terraform -chdir=infra/terraform fmt -recursive -check",
+    "terraform:validate": "terraform -chdir=infra/terraform init -backend=false && terraform -chdir=infra/terraform validate",
+    "verify": "npm run java:verify && npm run web:verify"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  },
+  "engines": {
+    "node": ">=20.18.0",
+    "npm": ">=10.0.0"
+  }
+}

@@ -16,25 +16,25 @@ Any non-blank data row with the wrong number of columns is rejected.
 
 ## Columns
 
-| Column | Type | Description |
-| --- | --- | --- |
-| `id` | String | Stable contact identifier. New contacts receive generated UUID strings. |
-| `firstName` | String | First name. |
-| `middleName` | String | Middle name. |
-| `lastName` | String | Last name. |
-| `nickName` | String | Nickname. |
-| `company` | String | Organization name. |
-| `jobTitle` | String | Job title. |
-| `department` | String | Department or team. |
-| `phoneNumbers` | List | Encoded phone number list. |
-| `emailAddresses` | List | Encoded email address list. |
-| `urlAddresses` | List | Encoded URL list. |
-| `addresses` | List | Encoded address list. |
-| `birthday` | Date | ISO local date, `yyyy-MM-dd`. |
-| `dates` | List | Encoded ISO local-date list. |
-| `socialProfiles` | List | Encoded social profile list. |
-| `instantMessageHandles` | List | Encoded instant message handle list. |
-| `notes` | String | Free-form notes. |
+| Column                  | Type   | Description                                                             |
+| ----------------------- | ------ | ----------------------------------------------------------------------- |
+| `id`                    | String | Stable contact identifier. New contacts receive generated UUID strings. |
+| `firstName`             | String | First name.                                                             |
+| `middleName`            | String | Middle name.                                                            |
+| `lastName`              | String | Last name.                                                              |
+| `nickName`              | String | Nickname.                                                               |
+| `company`               | String | Organization name.                                                      |
+| `jobTitle`              | String | Job title.                                                              |
+| `department`            | String | Department or team.                                                     |
+| `phoneNumbers`          | List   | Encoded phone number list.                                              |
+| `emailAddresses`        | List   | Encoded email address list.                                             |
+| `urlAddresses`          | List   | Encoded URL list.                                                       |
+| `addresses`             | List   | Encoded address list.                                                   |
+| `birthday`              | Date   | ISO local date, `yyyy-MM-dd`.                                           |
+| `dates`                 | List   | Encoded ISO local-date list.                                            |
+| `socialProfiles`        | List   | Encoded social profile list.                                            |
+| `instantMessageHandles` | List   | Encoded instant message handle list.                                    |
+| `notes`                 | String | Free-form notes.                                                        |
 
 ## Blank Values
 

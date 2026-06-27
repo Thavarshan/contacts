@@ -1,0 +1,15 @@
+**/target/
+**/node_modules/
+**/.next/
+**/.terraform/
+**/coverage/
+**/out/
+**/playwright-report/
+**/test-results/
+**/next-env.d.ts
+**/*.tsbuildinfo
+.DS_Store
+package-lock.json
+web/package-lock.json
+mvnw
+mvnw.cmd

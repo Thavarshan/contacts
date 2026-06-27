@@ -2,6 +2,8 @@
 target/
 out/
 bin/
+dist/
+build/
 
 # Maven wrapper binary cache
 .mvn/wrapper/maven-wrapper.jar
@@ -12,6 +14,8 @@ bin/
 *.temp
 *.swp
 *.swo
+*.tsbuildinfo
+next-env.d.ts
 
 # IntelliJ IDEA
 .idea/
@@ -40,6 +44,27 @@ Thumbs.db
 # Local runtime data
 contacts.csv
 *.local.csv
+
+# Node and Next.js outputs
+node_modules/
+.next/
+.pnp
+.pnp.*
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+
+# Vercel
+.vercel/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
 
 # Local Java upgrade assistant state
 .github/java-upgrade/

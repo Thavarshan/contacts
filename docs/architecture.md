@@ -1,7 +1,8 @@
 # Architecture
 
-Contacts CLI is a small layered Java application. The boundaries are intentionally explicit so the
-storage adapter, domain model, application service, and terminal interface can evolve independently.
+Contacts is a monorepo containing a layered Java application and a Next.js dashboard. The boundaries
+are intentionally explicit so the storage adapter, domain model, application service, terminal
+interface, HTTP interface, and web interface can evolve independently.
 
 ## Goals
 
@@ -14,7 +15,7 @@ storage adapter, domain model, application service, and terminal interface can e
 ## Layers
 
 ```text
-CLI commands
+CLI commands / HTTP routes / Web dashboard
     |
     v
 ContactService
@@ -31,10 +32,12 @@ CsvReader / CsvWriter
 
 ## Packages
 
-- `com.contacts`: domain model, service contract, repository contract, CSV repository, and mapper.
-- `com.contacts.cli`: Picocli command-line application and CLI formatting/search helpers.
-- `com.filemanager`: generic row-oriented reader and writer contracts.
-- `com.filemanager.csv`: OpenCSV-backed row reader and writer.
+- `core/src/main/java/com/contacts`: domain model, service contract, repository contract, CSV repository, and mapper.
+- `core/src/main/java/com/filemanager`: generic row-oriented reader and writer contracts.
+- `core/src/main/java/com/filemanager/csv`: OpenCSV-backed row reader and writer.
+- `cli/src/main/java/com/contacts/cli`: Picocli command-line application and CLI formatting/search helpers.
+- `api/src/main/java/com/contacts/api`: Javalin HTTP routes and JSON payloads.
+- `web`: Next.js dashboard that calls the Java API through local API routes.
 
 ## Main Components
 
@@ -95,6 +98,18 @@ subcommands for user workflows. CLI helpers include:
 
 Subcommands use `ContactService` rather than manipulating CSV files directly.
 
+### HTTP API
+
+`ContactsApi` is a Javalin adapter for dashboard and automation use cases. It depends on
+`ContactService` and exposes JSON endpoints for listing, creating, updating, and deleting contacts.
+The API does not shell out to the CLI; CLI and API are sibling adapters over the same core module.
+
+### Web Dashboard
+
+The dashboard lives in `web` and uses the Next.js Pages Router. Browser requests go to Next API
+routes, and those routes proxy to the Java API configured by `CONTACTS_API_URL`. This keeps browser
+code independent from the Java process location and avoids duplicating CSV persistence in TypeScript.
+
 ## Contact Identity
 
 Every contact has a stable string ID. New contacts receive generated UUIDs. The CSV schema stores
@@ -131,14 +146,16 @@ The Maven `verify` lifecycle runs:
 
 - Unit and integration tests.
 - Shaded CLI jar packaging.
+- Shaded API jar packaging.
 - Javadocs.
 - Spotless formatting checks.
 - PMD.
 - SpotBugs.
 - JaCoCo coverage check.
 - Maven Enforcer rules.
+- Next.js type-checking, linting, unit/integration tests, and production build.
 
-CI runs the same `./mvnw -B -ntp verify` command.
+CI runs Java and web verification as separate jobs.
 
 See [Testing and Quality](testing-quality.md) for the full quality workflow.
 

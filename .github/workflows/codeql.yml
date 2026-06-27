@@ -7,7 +7,7 @@ on:
       - develop
   pull_request:
   schedule:
-    - cron: "24 3 * * 1"
+    - cron: '24 3 * * 1'
   workflow_dispatch:
 
 permissions:
@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   analyze:
-    name: Analyze Java
+    name: Analyze Java and TypeScript
     runs-on: ubuntu-latest
 
     steps:
@@ -33,13 +33,13 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '17'
           cache: maven
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
-          languages: java-kotlin
+          languages: java-kotlin,javascript-typescript
 
       - name: Build project
         run: ./mvnw -B -ntp -DskipTests package

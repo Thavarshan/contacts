@@ -8,7 +8,7 @@
 
 ## Checklist
 
-- [ ] I ran `./mvnw verify`.
+- [ ] I ran `npm run verify` or the relevant Java/web verification command.
 - [ ] I added or updated tests for behavior changes.
 - [ ] I updated documentation for user-facing changes.
 - [ ] I kept this PR focused on one logical change.

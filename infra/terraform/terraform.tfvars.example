@@ -1,0 +1,10 @@
+project_name = "contacts"
+environment  = "prod"
+aws_region   = "us-east-1"
+
+# The deployment workflow supplies immutable ECR image tags automatically.
+# api_image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/contacts-prod-api:sha"
+# web_image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/contacts-prod-web:sha"
+
+# Optional HTTPS support.
+# certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"

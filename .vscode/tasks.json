@@ -48,6 +48,32 @@
       "windows": {
         "command": ".\\mvnw.cmd"
       }
+    },
+    {
+      "label": "Web: verify",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "web:verify"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Monorepo: verify",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "verify"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
     }
   ]
 }
