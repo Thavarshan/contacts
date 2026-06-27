@@ -1,0 +1,26 @@
+name: Pull Request Hygiene
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  pull-requests: read
+
+jobs:
+  title:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check title length
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [ ${#PR_TITLE} -lt 8 ]; then
+            echo "Pull request title should be at least 8 characters."
+            exit 1
+          fi

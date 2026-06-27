@@ -1,0 +1,48 @@
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  schedule:
+    - cron: "24 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze Java
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: java-kotlin
+
+      - name: Build project
+        run: ./mvnw -B -ntp -DskipTests package
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4

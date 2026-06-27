@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Maven: verify",
+      "type": "shell",
+      "command": "./mvnw",
+      "args": ["verify"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "windows": {
+        "command": ".\\mvnw.cmd"
+      }
+    },
+    {
+      "label": "Maven: test",
+      "type": "shell",
+      "command": "./mvnw",
+      "args": ["test"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "windows": {
+        "command": ".\\mvnw.cmd"
+      }
+    },
+    {
+      "label": "Maven: format",
+      "type": "shell",
+      "command": "./mvnw",
+      "args": ["spotless:apply"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "windows": {
+        "command": ".\\mvnw.cmd"
+      }
+    }
+  ]
+}
