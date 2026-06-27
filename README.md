@@ -29,26 +29,26 @@ The application demonstrates a layered design with domain models, repository int
 
 ```bash
 ./mvnw verify
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --help
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --help
 ```
 
 Create and list contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv add \
   --first-name Jane \
   --last-name Doe \
   --email jane@example.com \
   --phone +15550100
 
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv list
 ```
 
 Start the API:
 
 ```bash
 CONTACTS_CSV_PATH=contacts.csv CONTACTS_API_PORT=7070 \
-  java -jar api/target/contacts-api-1.0.0-SNAPSHOT-api.jar
+  java -jar api/target/contacts-api-1.0.0-api.jar
 ```
 
 Check the API:

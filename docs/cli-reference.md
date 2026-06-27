@@ -10,7 +10,7 @@ The root command is implemented by `com.contacts.cli.CliApplication`. The runnab
 is `com.contacts.Main`.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --help
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --help
 ```
 
 ## Global Options
@@ -57,7 +57,7 @@ These options are accepted by `add` and `update`.
 List all contacts in compact format.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv list
 ```
 
 ### `add`
@@ -65,7 +65,7 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv lis
 Add a contact and print the generated ID.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv add \
   --first-name Jane \
   --last-name Doe \
   --email jane@example.com
@@ -76,7 +76,7 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add
 Search contacts using case-insensitive substring matching.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv search acme
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv search acme
 ```
 
 Searchable fields include names, company, job title, department, phone numbers, email addresses,
@@ -87,11 +87,11 @@ URLs, addresses, birthday, dates, social profiles, instant message handles, and 
 Print full details for one contact.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv show 1
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv show 1
 ```
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv show 11111111-1111-1111-1111-111111111111
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv show 11111111-1111-1111-1111-111111111111
 ```
 
 ### `update <id-or-index>`
@@ -99,7 +99,7 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv sho
 Update one contact.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv update 1 \
   --company Acme \
   --phone +15550100
 ```
@@ -112,7 +112,7 @@ list when supplied.
 Delete one contact.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv delete 1
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv delete 1
 ```
 
 ### `clear`
@@ -120,7 +120,7 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv del
 Delete all contacts from the target CSV file.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv clear
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv clear
 ```
 
 ### `import <path> [--replace]`
@@ -129,13 +129,13 @@ Import contacts from another CSV file. Without `--replace`, imported contacts ar
 current file.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv import import.csv
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv import import.csv
 ```
 
 Replace current contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv import import.csv --replace
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv import import.csv --replace
 ```
 
 ### `export <path>`
@@ -143,7 +143,7 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv imp
 Export contacts to another CSV file. Parent directories are created when needed.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv export backups/contacts.csv
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv export backups/contacts.csv
 ```
 
 ## Contact References

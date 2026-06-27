@@ -22,7 +22,7 @@ The Maven version lives in `pom.xml`.
 Current development versions use `-SNAPSHOT`, for example:
 
 ```text
-1.0.0-SNAPSHOT
+1.0.0
 ```
 
 Release tags use:
@@ -59,13 +59,13 @@ npm --prefix web run verify
 
 ```bash
 tmpfile=$(mktemp)
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file "$tmpfile" add \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file "$tmpfile" add \
   --first-name Jane \
   --last-name Doe \
   --email jane@example.com
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file "$tmpfile" list
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file "$tmpfile" list
 CONTACTS_CSV_PATH="$tmpfile" CONTACTS_API_PORT=7070 \
-  java -jar api/target/contacts-api-1.0.0-SNAPSHOT-api.jar &
+  java -jar api/target/contacts-api-1.0.0-api.jar &
 api_pid=$!
 curl --fail http://127.0.0.1:7070/health
 kill "$api_pid"

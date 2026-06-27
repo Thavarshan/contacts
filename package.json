@@ -5,7 +5,7 @@
   "description": "Contacts CLI, HTTP API, and web dashboard monorepo.",
   "scripts": {
     "api:build": "./mvnw -B -ntp -pl api -am package",
-    "api:dev": "CONTACTS_API_PORT=${CONTACTS_API_PORT:-7070} java -jar api/target/contacts-api-1.0.0-SNAPSHOT-api.jar",
+    "api:dev": "CONTACTS_API_PORT=${CONTACTS_API_PORT:-7070} java -jar api/target/contacts-api-1.0.0-api.jar",
     "cli:build": "./mvnw -B -ntp -pl cli -am package",
     "docker:build": "npm run docker:build:api && npm run docker:build:web",
     "docker:build:api": "docker build -f api/Dockerfile -t contacts-api:local .",

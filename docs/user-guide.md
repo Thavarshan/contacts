@@ -24,7 +24,7 @@ Build the runnable CLI jar:
 The executable shaded jar is created at:
 
 ```text
-cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar
+cli/target/contacts-cli-1.0.0-cli.jar
 ```
 
 ## First Run
@@ -33,7 +33,7 @@ Use `--file` to choose the CSV file. When omitted, the CLI uses `contacts.csv` i
 directory.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv list
 ```
 
 An empty or missing file is valid. The CLI prints:
@@ -45,7 +45,7 @@ No contacts found.
 ## Add Contacts
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv add \
   --first-name Jane \
   --last-name Doe \
   --company Acme \
@@ -63,7 +63,7 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add
 Repeatable options can be supplied more than once:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv add \
   --first-name Alex \
   --last-name Rivera \
   --email alex.work@example.com \
@@ -77,7 +77,7 @@ Every added contact receives a stable generated ID. The command prints that ID a
 ## List Contacts
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv list
 ```
 
 Example output:
@@ -92,7 +92,7 @@ the stable contact ID for automation.
 ## Search Contacts
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv search jane
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv search jane
 ```
 
 Search is case-insensitive and checks names, organization fields, contact methods, addresses, dates,
@@ -103,13 +103,13 @@ social profiles, instant message handles, and notes.
 Use a stable ID:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv show 11111111-1111-1111-1111-111111111111
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv show 11111111-1111-1111-1111-111111111111
 ```
 
 Use a list index:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv show 1
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv show 1
 ```
 
 IDs are preferred in scripts because list indexes can change when data changes.
@@ -121,7 +121,7 @@ fields such as `--email` and `--phone`, supplying the option replaces that list 
 values.
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv update 1 \
   --company "Acme Corporation" \
   --job-title "Staff Engineer" \
   --email jane.new@example.com
@@ -130,13 +130,13 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv upd
 ## Delete Contacts
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv delete 1
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv delete 1
 ```
 
 For scripts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv delete 11111111-1111-1111-1111-111111111111
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv delete 11111111-1111-1111-1111-111111111111
 ```
 
 ## Import and Export
@@ -144,25 +144,25 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv del
 Append contacts from another CSV file:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv import examples/contacts.sample.csv
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv import examples/contacts.sample.csv
 ```
 
 Replace the current file with imported contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv import examples/contacts.sample.csv --replace
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv import examples/contacts.sample.csv --replace
 ```
 
 Export the current contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv export backups/contacts.csv
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv export backups/contacts.csv
 ```
 
 ## Clear Contacts
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv clear
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv clear
 ```
 
 This writes a valid CSV file containing only the header.

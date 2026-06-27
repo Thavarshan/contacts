@@ -15,7 +15,7 @@ Start the server:
 
 ```bash
 CONTACTS_CSV_PATH=contacts.csv CONTACTS_API_PORT=7070 \
-  java -jar api/target/contacts-api-1.0.0-SNAPSHOT-api.jar
+  java -jar api/target/contacts-api-1.0.0-api.jar
 ```
 
 Environment variables:

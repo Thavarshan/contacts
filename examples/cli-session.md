@@ -9,7 +9,7 @@ Build the project:
 Add contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add \
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv add \
     --first-name Jane \
     --last-name Doe \
     --email jane@example.com \
@@ -19,23 +19,23 @@ java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv add
 List contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv list
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv list
 ```
 
 Search contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv search jane
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv search jane
 ```
 
 Update a contact by list index:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv update 1 --company Acme
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv update 1 --company Acme
 ```
 
 Export contacts:
 
 ```bash
-java -jar cli/target/contacts-cli-1.0.0-SNAPSHOT-cli.jar --file contacts.csv export backup.csv
+java -jar cli/target/contacts-cli-1.0.0-cli.jar --file contacts.csv export backup.csv
 ```
