@@ -5,6 +5,7 @@ WORKDIR /workspace
 COPY .mvn .mvn
 COPY mvnw pom.xml ./
 COPY core/pom.xml core/pom.xml
+COPY cli/pom.xml cli/pom.xml
 COPY api/pom.xml api/pom.xml
 COPY core/src core/src
 COPY api/src api/src
